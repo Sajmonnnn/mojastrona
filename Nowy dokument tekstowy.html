@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strona z dynamicznym tłem</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Czcionka */
+            display: flex;
+            flex-direction: column; /* Układ w kolumnie */
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Pełna wysokość ekranu */
+            margin: 0;
+            background-color: #0000FF; /* Początkowe tło (niebieskie) */
+            color: white; /* Kolor tekstu */
+            transition: background-color 0.5s ease; /* Płynna zmiana tła */
+        }
+        h1 {
+            font-size: 3rem;
+            text-align: center;
+            margin: 10px;
+        }
+        input {
+            padding: 10px;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            width: 80%;
+            max-width: 400px;
+            border: 2px solid white;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Strona działa na niebieskim tle</h1>
+    <input type="text" id="password" placeholder="Wpisz hasło..." />
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const body = document.body; // Całe ciało strony (do zmiany tła)
+
+        // Funkcja do sprawdzania hasła na pierwszym ekranie
+        passwordInput.addEventListener('input', function() {
+            const enteredPassword = passwordInput.value.toLowerCase(); // Zamiana wprowadzonego hasła na małe litery
+
+            // Sprawdzamy, czy wprowadzone hasło to "to poprawne hasło" (na pierwszym ekranie)
+            if (enteredPassword === 'to poprawne hasło') {
+                // Usuwamy wszystkie elementy strony
+                document.body.innerHTML = '';
+
+                // Tworzymy drugi ekran z polem tekstowym
+                const secondScreenMessage = document.createElement('h1');
+                secondScreenMessage.innerText = 'Drugi ekran - Wpisz hasło "meta"';
+                document.body.appendChild(secondScreenMessage);
+
+                const passwordInputSecondScreen = document.createElement('input');
+                passwordInputSecondScreen.type = 'text';
+                passwordInputSecondScreen.placeholder = 'Wpisz hasło "meta"';
+                document.body.appendChild(passwordInputSecondScreen);
+
+                // Zmieniamy tło na obrazek z tego samego folderu
+                body.style.backgroundImage = 'url("background.jpg")';
+                body.style.backgroundSize = 'cover'; // Tło będzie się skalować do wielkości ekranu
+                body.style.backgroundPosition = 'center'; // Tło będzie wyśrodkowane
+
+                // Funkcja zmieniająca kolor tła co 2 sekundy po wpisaniu hasła "meta"
+                passwordInputSecondScreen.addEventListener('input', function() {
+                    const enteredPasswordSecond = passwordInputSecondScreen.value.toLowerCase(); // Sprawdzanie wprowadzonego hasła (na drugim ekranie)
+                    if (enteredPasswordSecond === 'meta') {
+                        // Usuwamy zawartość strony, w tym obrazek tła
+                        document.body.innerHTML = '';
+
+                        // Resetujemy tło, usuwając obrazek
+                        body.style.backgroundImage = '';
+
+                        // Funkcja zmieniająca kolor tła co 2 sekundy
+                        setInterval(function() {
+                            const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16); // Losowy kolor
+                            body.style.backgroundColor = randomColor; // Zmieniamy tło na losowy kolor
+                        }, 2000); // Co 2 sekundy
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
